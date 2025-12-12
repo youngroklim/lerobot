@@ -10,6 +10,7 @@ SUPPORTED_COMMANDS = (
     "lerobot-record",
     "lerobot-calibrate",
     "lerobot-teleoperate",
+    "lerobot-find-port",
 )
 
 

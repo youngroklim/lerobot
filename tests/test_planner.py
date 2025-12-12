@@ -23,3 +23,12 @@ def test_build_args_rejects_unknown_command() -> None:
 
     with pytest.raises(ValueError):
         planner.build_args(config)
+
+
+def test_build_args_allow_find_port_without_config() -> None:
+    planner = CommandPlanner()
+    config = CommandConfig(command="lerobot-find-port", extra_args=["--list"])
+
+    args = planner.build_args(config)
+
+    assert args == ["lerobot-find-port", "--list"]

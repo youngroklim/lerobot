@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import queue
+import shlex
 import tkinter as tk
 from pathlib import Path
 from tkinter import ttk
@@ -32,9 +33,9 @@ class Application(tk.Tk):
             row=0, column=1, sticky=tk.EW
         )
 
-        ttk.Label(frame, text="Config path").grid(row=1, column=0, sticky=tk.W, pady=(8, 0))
-        self.config_var = tk.StringVar()
-        ttk.Entry(frame, textvariable=self.config_var).grid(row=1, column=1, sticky=tk.EW, pady=(8, 0))
+        ttk.Label(frame, text="Arguments").grid(row=1, column=0, sticky=tk.W, pady=(8, 0))
+        self.args_var = tk.StringVar()
+        ttk.Entry(frame, textvariable=self.args_var).grid(row=1, column=1, sticky=tk.EW, pady=(8, 0))
 
         ttk.Label(frame, text="Working dir").grid(row=2, column=0, sticky=tk.W, pady=(8, 0))
         self.working_dir_var = tk.StringVar(value=str(Path.cwd()))
@@ -54,9 +55,10 @@ class Application(tk.Tk):
 
     def start(self) -> None:
         try:
-            config_path = Path(self.config_var.get()) if self.config_var.get() else None
+            args_text = self.args_var.get().strip()
+            extra_args = shlex.split(args_text) if args_text else []
             working_dir = Path(self.working_dir_var.get())
-            command_config = CommandConfig(command=self.command_var.get(), config_path=config_path)
+            command_config = CommandConfig(command=self.command_var.get(), extra_args=extra_args)
             request = ExecutionRequest(command_config=command_config, working_dir=working_dir)
             self.log_text.configure(state=tk.NORMAL)
             self.log_text.delete("1.0", tk.END)

@@ -1,6 +1,6 @@
 # LeRobot GUI Runner
 
-This repository hosts a GUI application that safely orchestrates LeRobot CLI commands such as `lerobot-record`, `lerobot-calibrate`, and `lerobot-teleoperate`. The app keeps command execution observable and user-friendly while isolating subprocess work from UI code.
+This repository hosts a GUI application that safely orchestrates LeRobot CLI commands such as `lerobot-record`, `lerobot-calibrate`, `lerobot-teleoperate`, and `lerobot-find-port`. The app keeps command execution observable and user-friendly while isolating subprocess work from UI code.
 
 ## Architecture boundaries
 
@@ -18,7 +18,7 @@ All LeRobot invocations should use subprocesses with argument lists (no shell st
 - `core.planner` builds safe argument lists for supported LeRobot commands.
 - `core.session` creates per-run session directories and writes metadata/log files.
 - `adapters.lerobot_runner` executes CLI calls in a background thread with streamed output and stop/kill handling.
-- `ui.app` provides a minimal Tkinter interface to pick a command, optional config path, working directory, and observe logs.
+- `ui.app` provides a minimal Tkinter interface to pick a command, supply CLI arguments directly, set a working directory, and observe logs.
 
 ## Python and dependency rules
 
@@ -51,7 +51,7 @@ With the virtual environment active and dependencies installed:
 python -m ui.app
 ```
 
-The window allows choosing a LeRobot command, specifying an optional config path and working directory, and streaming stdout/stderr for the run. Use **Stop** to request termination; the runner sends a terminate signal first and escalates to kill on timeout.
+The window allows choosing a LeRobot command (including `lerobot-find-port`), entering CLI arguments directly instead of a config file, setting a working directory, and streaming stdout/stderr for the run. Use **Stop** to request termination; the runner sends a terminate signal first and escalates to kill on timeout.
 
 ## Environment validation
 
